@@ -1,0 +1,102 @@
+﻿<Page x:Class="Airport.Pages.PrintPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Airport.Pages"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="1000"
+      Title="PrintPage">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="120"></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition></ColumnDefinition>
+                <ColumnDefinition Width="150"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <StackPanel Orientation="Vertical" VerticalAlignment="Top" HorizontalAlignment="Left" Margin="0 20 0 0">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Начальная дата" VerticalAlignment="Center" Margin="30 0 10 0"></TextBlock>
+                    <DatePicker Name="datePickerStartDate"></DatePicker>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0 20 0 0">
+                    <TextBlock Text="Конечная дата" VerticalAlignment="Center" Margin="30 0 15 0"></TextBlock>
+                    <DatePicker Name="datePickerEndDate"></DatePicker>
+                </StackPanel>                
+            </StackPanel>
+            <Button Content="Подтвердить" Name="btnConfirm" Click="btnConfirm_Click" Margin="50 0 0 0"></Button>
+            <Button Width="120" Name="btnPrint" Click="btnPrint_Click" Grid.Column="2" HorizontalAlignment="Right">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Печать" Margin="0 0 20 0"></TextBlock>
+                    <Image Source="/Airport;component/Resources/printer.png" Height="20" Width="20"></Image>
+                </StackPanel>
+            </Button>
+        </Grid>
+        <Label Name="labelNotFound" Content="Не найдено совпадений" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center"></Label>
+        <FlowDocumentScrollViewer Name="flowDoc" Grid.Row="1" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+            <FlowDocument Name="flowDocPrint">
+                <BlockUIContainer>
+                    <DataGrid AutoGenerateColumns="False" Name="dGridTickets" Grid.Row="1" IsReadOnly="True" >
+                        <DataGrid.ItemContainerStyle>
+                            <Style TargetType="DataGridRow">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Confirmed}" Value="True">
+                                        <Setter Property="Background" Value="#37393d"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Confirmed}" Value="False">
+                                        <Setter Property="Background" Value="#781b0e"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </DataGrid.ItemContainerStyle>
+                        <DataGrid.Columns>
+                            <DataGridTemplateColumn Header="Клиент" Width="150">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{Binding Firstname}"></TextBlock>
+                                            <TextBlock Text=" "></TextBlock>
+                                            <TextBlock Text="{Binding Lastname}"></TextBlock>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTemplateColumn Header="Маршрут" Width="*">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{Binding Schedules.Routes.Airports.IATACode}"></TextBlock>
+                                            <TextBlock Text=" -> "></TextBlock>
+                                            <TextBlock Text="{Binding Schedules.Routes.Airports1.IATACode}"></TextBlock>
+                                            <TextBlock Text=" ("></TextBlock>
+                                            <TextBlock Name="txtDateSchedule" Text="{Binding Schedules.Date, StringFormat=dd.MM.yyyy}"></TextBlock>
+                                            <TextBlock Text=" "></TextBlock>
+                                            <TextBlock Name="txtTimeSchedule" Text="{Binding Schedules.Time}"></TextBlock>
+                                            <TextBlock Text=")"></TextBlock>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                            <DataGridTextColumn Header="Класс места" Binding="{Binding CabinTypes.Name}" Width="100"></DataGridTextColumn>
+                            <DataGridTemplateColumn Header="Сотрудник" Width="*">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{Binding Users.FirstName}"></TextBlock>
+                                            <TextBlock Text=" "></TextBlock>
+                                            <TextBlock Text="{Binding Users.LastName}"></TextBlock>
+                                        </StackPanel>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>                    
+                </BlockUIContainer>             
+            </FlowDocument>
+        </FlowDocumentScrollViewer>
+    </Grid>
+</Page>

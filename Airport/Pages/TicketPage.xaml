@@ -1,0 +1,107 @@
+﻿<Page x:Class="Airport.Pages.TicketPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Airport.Pages"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="TicketPage" IsVisibleChanged="Page_IsVisibleChanged">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="50"></RowDefinition>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal" Margin="30 0 0 0">
+            <TextBlock Text="Поиск" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
+            <TextBox Name="txtSearchTicket" TextChanged="txtSearchTicket_TextChanged" Margin="20 0 0 0"></TextBox>
+        </StackPanel>
+        <Label Name="labelNotFound" Content="Не найдено совпадений" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center"></Label>
+        <DataGrid AutoGenerateColumns="False" Name="dGridTickets" Grid.Row="1" IsReadOnly="True" >
+            
+            <DataGrid.ItemContainerStyle>
+                <Style TargetType="DataGridRow">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Confirmed}" Value="True">
+                            <Setter Property="Background" Value="#37393d"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Confirmed}" Value="False">
+                            <Setter Property="Background" Value="#781b0e"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.ItemContainerStyle>
+            
+            <DataGrid.Columns>
+                <DataGridTemplateColumn Header="Клиент" Width="135">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding Firstname}"></TextBlock>
+                                <TextBlock Text=" "></TextBlock>
+                                <TextBlock Text="{Binding Lastname}"></TextBlock>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Header="Маршрут" Width="*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding Schedules.Routes.Airports.IATACode}"></TextBlock>
+                                <TextBlock Text=" -> "></TextBlock>
+                                <TextBlock Text="{Binding Schedules.Routes.Airports1.IATACode}"></TextBlock>
+                                <TextBlock Text=" ("></TextBlock>
+                                <TextBlock Name="txtDateSchedule" Text="{Binding Schedules.Date, StringFormat=dd.MM.yyyy}"></TextBlock>
+                                <TextBlock Text=" "></TextBlock>
+                                <TextBlock Name="txtTimeSchedule" Text="{Binding Schedules.Time}"></TextBlock>
+                                <TextBlock Text=")"></TextBlock>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn Header="Телефон" Binding="{Binding Phone}" Width="100"></DataGridTextColumn>
+                <DataGridTextColumn Header="Номер паспорта" Binding="{Binding PassportNumber}" Width="100"></DataGridTextColumn>
+                <DataGridTextColumn Header="Класс места" Binding="{Binding CabinTypes.Name}" Width="100"></DataGridTextColumn>
+                <DataGridTemplateColumn Header="Сотрудник" Width="*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding Users.FirstName}"></TextBlock>
+                                <TextBlock Text=" "></TextBlock>
+                                <TextBlock Text="{Binding Users.LastName}"></TextBlock>
+                            </StackPanel>                            
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTemplateColumn Width="60">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Height="30" Width="30" Name="btnEdit" Click="btnEdit_Click">
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="/Airport;component/Resources/redact.png" Height="18" Width="18"></Image>
+                                </StackPanel>
+                            </Button>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <Button Grid.Row="2" HorizontalAlignment="Left" Name="btnAdd" Click="btnAdd_Click" >
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Добавить" Margin="0 0 80 0"></TextBlock>
+                <Image Source="/Airport;component/Resources/add.png" Height="18" Width="18"></Image>
+            </StackPanel>
+        </Button>
+        <Button Grid.Row="2" HorizontalAlignment="Right" Name="btnDelete" Click="btnDelete_Click" >
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Удалить" Margin="0 0 80 0"></TextBlock>
+                <Image Source="/Airport;component/Resources/delete.png" Height="18" Width="18"></Image>
+            </StackPanel>
+        </Button>
+
+    </Grid>
+</Page>

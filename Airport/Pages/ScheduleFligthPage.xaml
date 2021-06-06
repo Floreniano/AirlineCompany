@@ -1,0 +1,114 @@
+﻿<Page x:Class="Airport.Pages.ScheduleFligthPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Airport.Pages"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="1000"
+      Title="ScheduleFligthPage" IsVisibleChanged="Page_IsVisibleChanged">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="135"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="50"></RowDefinition>
+        </Grid.RowDefinitions>
+        <GroupBox Grid.ColumnSpan="2"  Height="115" VerticalAlignment="Top" Margin="20 5 20 0" Width="auto">
+            <GroupBox.Header>
+                <TextBlock Text="Параметры поиска" ></TextBlock>
+            </GroupBox.Header>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition></RowDefinition>
+                    <RowDefinition></RowDefinition>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition></ColumnDefinition>
+                    <ColumnDefinition Width="300"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal">
+                    <TextBlock Text="Откуда:" Margin="0 0 40 0" VerticalAlignment="Center"></TextBlock>
+                    <ComboBox SelectedItem="{Binding IATACode}" Width="200" Height="30" Name="comboFromAirport" DisplayMemberPath="IATACode" SelectionChanged="comboFromAirport_SelectionChanged"></ComboBox>
+                </StackPanel>
+                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal" Grid.Row="1">
+                    <TextBlock Text="Куда:" Margin="0 0 55 0" VerticalAlignment="Center" ></TextBlock>
+                    <ComboBox SelectedItem="{Binding IATACode}" Width="200" Height="30" Name="comboToAirport" DisplayMemberPath="IATACode" SelectionChanged="comboToAirport_SelectionChanged"></ComboBox>
+                </StackPanel>
+
+                <Button Grid.Column="2" Grid.Row="1" Content="Сбросить параметры" Width="150" Name="btnResetParameters" Click="btnResetParameters_Click" HorizontalAlignment="Center"></Button>
+                
+                <Button Content="Применить" HorizontalAlignment="Left" Grid.Column="1" Name="btnApplyParameters" Click="btnApplyParameters_Click" Grid.RowSpan="2"></Button>
+
+
+                <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Orientation="Horizontal" Grid.Column="2" Margin="0 0 30 0">
+                    <TextBlock Margin="0 0 25 0" Text="Поиск" VerticalAlignment="Center"></TextBlock>
+                    <TextBox Name="txtBoxSearchSchedule" TextChanged="txtBoxSearchSchedule_TextChanged"></TextBox>
+                </StackPanel>
+            </Grid>
+        </GroupBox>
+        <Label Name="labelNotFound" Content="Не найдено совпадений" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center"></Label>
+        <DataGrid AutoGenerateColumns="False" Name="dGridSheduleFlight" IsReadOnly="True" Grid.Row="1">
+
+            <DataGrid.ItemContainerStyle>
+                <Style TargetType="DataGridRow">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Confirmed}" Value="True">
+                            <Setter Property="Background" Value="#37393d"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Confirmed}" Value="False">
+                            <Setter Property="Background" Value="#781b0e"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.ItemContainerStyle>
+
+            <DataGrid.Columns>
+                <DataGridTemplateColumn Header="Дата" Width="auto">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition></RowDefinition>
+                                    <RowDefinition></RowDefinition>
+                                </Grid.RowDefinitions>
+                                <TextBlock Text="{Binding Time}" HorizontalAlignment="Center" Grid.Row="0"></TextBlock>
+                                <TextBlock Text="{Binding Date, StringFormat=dd.MM.yyyy}" Grid.Row="1"></TextBlock>
+                            </Grid>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn Header="Место отправления" Binding="{Binding Routes.Airports.IATACode}" Width="123"></DataGridTextColumn>
+                <DataGridTextColumn Header="Место прибытия" Binding="{Binding Routes.Airports1.IATACode}" Width="100"></DataGridTextColumn>
+                <DataGridTextColumn Header="Самолет" Binding="{Binding Aircrafts.Name}" Width="*"></DataGridTextColumn>
+                <DataGridTextColumn Header="Эконом класс" Binding="{Binding EconomyPrice, StringFormat=c, ConverterCulture=ru}" Width="*"></DataGridTextColumn>
+                <DataGridTextColumn Header="Бизнес класс" Binding="{Binding BusinessPrice, StringFormat=c, ConverterCulture=ru}" Width="*"></DataGridTextColumn>
+                <DataGridTextColumn Header="Первый класс" Binding="{Binding FirstClassPrice, StringFormat=c, ConverterCulture=ru}" Width="*"></DataGridTextColumn>
+                <DataGridTemplateColumn Width="60">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Height="30" Width="30" Name="btnEdit" Click="btnEdit_Click">
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="/Airport;component/Resources/redact.png" Height="18" Width="18"></Image>
+                                </StackPanel>
+                            </Button>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <Button Grid.Row="2" HorizontalAlignment="Right" Name="btnDelete" Click="btnDelete_Click" >
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Удалить" Margin="0 0 80 0"></TextBlock>
+                <Image Source="/Airport;component/Resources/delete.png" Height="18" Width="18"></Image>
+            </StackPanel>
+        </Button>
+        <Button Grid.Row="2" HorizontalAlignment="Left" Name="btnAdd" Click="btnAdd_Click" >
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Добавить" Margin="0 0 80 0"></TextBlock>
+                <Image Source="/Airport;component/Resources/add.png" Height="18" Width="18"></Image>
+            </StackPanel>
+        </Button>
+    </Grid>
+</Page>

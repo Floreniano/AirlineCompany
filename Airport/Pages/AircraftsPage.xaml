@@ -1,0 +1,71 @@
+﻿<Page x:Class="Airport.Pages.AircraftsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Airport.Pages"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="AircraftsPage" IsVisibleChanged="Page_IsVisibleChanged">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"></RowDefinition>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="50"></RowDefinition>
+        </Grid.RowDefinitions>
+        <StackPanel Orientation="Horizontal" Margin="30 0 0 0">
+            <TextBlock Text="Поиск" HorizontalAlignment="Center" VerticalAlignment="Center"></TextBlock>
+            <TextBox Name="txtSearchAircraft" TextChanged="txtSearchAircraft_TextChanged" Margin="20 0 0 0"></TextBox>
+        </StackPanel>
+        <Label Name="labelNotFound" Content="Не найдено совпадений" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center"></Label>
+        <DataGrid AutoGenerateColumns="False" Name="dGridAircraft" Grid.Row="1" IsReadOnly="True" >
+
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Название" Binding="{Binding Name}" Width="*"></DataGridTextColumn>
+                <DataGridTextColumn Header="Модель" Binding="{Binding MakeModel}" Width="*"></DataGridTextColumn>
+                <DataGridTextColumn Header="Количество мест" Binding="{Binding TotalSeats}" Width="*"></DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding EconomySeats}" Width="*">
+                    <DataGridTextColumn.Header>
+                        <StackPanel>
+                            <TextBlock Text="Количество мест"></TextBlock>
+                            <TextBlock Text="(економ)"></TextBlock>
+                        </StackPanel>                        
+                    </DataGridTextColumn.Header>
+                </DataGridTextColumn>
+                <DataGridTextColumn Binding="{Binding BusinessSeats}" Width="*">
+                    <DataGridTextColumn.Header>
+                        <StackPanel>
+                            <TextBlock Text="Количество мест"></TextBlock>
+                            <TextBlock Text="(бизнесс)"></TextBlock>
+                        </StackPanel>
+                    </DataGridTextColumn.Header>
+                </DataGridTextColumn>
+                <DataGridTemplateColumn Width="60">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Button Height="30" Width="30" Name="btnEdit" Click="btnEdit_Click">
+                                <StackPanel Orientation="Horizontal">
+                                    <Image Source="/Airport;component/Resources/redact.png" Height="18" Width="18"></Image>
+                                </StackPanel>
+                            </Button>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <Button Grid.Row="2" HorizontalAlignment="Left" Name="btnAdd" Click="btnAdd_Click" >
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Добавить" Margin="0 0 80 0"></TextBlock>
+                <Image Source="/Airport;component/Resources/add.png" Height="18" Width="18"></Image>
+            </StackPanel>
+        </Button>
+        <Button Grid.Row="2" HorizontalAlignment="Right" Name="btnDelete" Click="btnDelete_Click" >
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Удалить" Margin="0 0 80 0"></TextBlock>
+                <Image Source="/Airport;component/Resources/delete.png" Height="18" Width="18"></Image>
+            </StackPanel>
+        </Button>
+
+    </Grid>
+</Page>
